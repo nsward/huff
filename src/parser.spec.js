@@ -143,8 +143,8 @@ describe('parser tests', () => {
                 opcodes.push2,
                 '1234',
                 opcodes.swap2,
-                opcodes.push2,
-                '0000',
+                opcodes.push1,
+                '00',
                 opcodes.jumpi,
             ].join('');
             expect(output.data.bytecode).to.equal(expected);

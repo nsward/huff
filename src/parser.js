@@ -364,9 +364,9 @@ parser.processMacroInternal = (
             case TYPES.PUSH_JUMP_LABEL: {
                 jumptable[index] = [{ label: op.value, bytecodeIndex: 0 }];
                 const sourcemap = inputMaps.getFileLine(op.index, map);
-                offset += 3;
+                offset += 2;
                 return {
-                    bytecode: `${opcodes.push2}xxxx`,
+                    bytecode: `${opcodes.push1}xx`,
                     sourcemap: [sourcemap, sourcemap, sourcemap],
                 };
             }
@@ -380,6 +380,7 @@ parser.processMacroInternal = (
                 };
             }
             case TYPES.JUMPDEST: {
+                check(offset <= 255, `offset ${offset} too large for single byte jumpdests`);
                 jumpindices[op.value] = offset;
                 offset += 1;
                 return {
@@ -411,12 +412,12 @@ parser.processMacroInternal = (
                 for (const { label: jumplabel, bytecodeIndex } of jumps) {
                     // eslint-disable-next-line no-prototype-builtins
                     if (jumpindices.hasOwnProperty(jumplabel)) {
-                        const jumpvalue = padNBytes(toHex(jumpindices[jumplabel]), 2);
+                        const jumpvalue = padNBytes(toHex(jumpindices[jumplabel]), 1);
                         const pre = formattedBytecode.slice(0, bytecodeIndex + 2);
-                        const post = formattedBytecode.slice(bytecodeIndex + 6);
-                        if (formattedBytecode.slice(bytecodeIndex + 2, bytecodeIndex + 6) !== 'xxxx') {
+                        const post = formattedBytecode.slice(bytecodeIndex + 4);
+                        if (formattedBytecode.slice(bytecodeIndex + 2, bytecodeIndex + 4) !== 'xx') {
                             throw new Error(
-                                `expected indicies ${bytecodeIndex + 2} to ${bytecodeIndex + 6} to be jump location, of
+                                `expected indicies ${bytecodeIndex + 2} to ${bytecodeIndex + 4} to be jump location, of
                             ${formattedBytecode}`
                             );
                         }

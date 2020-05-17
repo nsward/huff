@@ -40,7 +40,7 @@
   },
   "scripts": {
     "lint": "eslint --ignore-path ./.eslintignore .",
-    "test": "mocha ./src/ --bail --colors --exit --recursive --reporter spec --trace-warnings",
+    "test": "mocha ./src/ --colors --exit --recursive --reporter spec --trace-warnings",
     "exampletest": "mocha ./example/ --bail --colors --exit --recursive --reporter spec --trace-warnings"
   }
 }
