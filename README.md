@@ -1,3 +1,9 @@
+# Branch: small-jumps
+A hack to replace the hardcoded 2-byte jumpdest pushes with single-byte pushes.
+Can only be used if there are no jumpdests with offset > 255.
+  
+I expect that jump tables on this branch are at best inefficient (still using push2 for jumpdests) and at worst completely broken.
+  
 ## **Huff**: a programming language for the Ethereum Virtual Machine
 
 <p align="center"><img src="https://i.imgur.com/SVRjUhU.png" width="640px"/></p>
@@ -67,8 +73,8 @@ template <p1,p2>
 }
 ```
 
-The `takes` parameter defines the number of items the macro expects to be on the stack.  
-The `returns` parameter defines the number of items the macro will leave on the stack (including the items from `takes`).  
+The `takes` parameter defines the number of items the macro expects to be on the stack.
+The `returns` parameter defines the number of items the macro will leave on the stack (including the items from `takes`).
 These fields are for illustrative purposes only - they are not enforced by the compiler, as that would inhibit macros where the stack state is unknowable at compile time. Some languages might consider that a negative, but not Huff.
 
 ### **Jump tables**
@@ -135,7 +141,7 @@ template<p1>
 }
 ```
 
-Literals can be expressed in either decimal form or hexadecimal form (prepended by `0x`).  
+Literals can be expressed in either decimal form or hexadecimal form (prepended by `0x`).
 `push` opcodes are not used in Huff - literals used directly inside Huff code will be replaced with the smallest suitable `push` instruction by the compiler.
 
 ### **"Where can I find example Huff code?"**
